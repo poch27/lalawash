@@ -1,0 +1,28 @@
+/* Lalawash — Laundry Landing Page */
+/* Pure CSS, mobile-first */
+
+:root {
+  --primary: #2d6a4f;
+  --primary-light: #40916c;
+  --accent: #d4a373;
+  --bg: #fefae0;
+  --text: #1b1b1b;
+  --text-light: #5a5a5a;
+  --white: #ffffff;
+  --radius: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+}
+
+/* TODO: full styles */
