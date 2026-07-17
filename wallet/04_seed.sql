@@ -1,0 +1,25 @@
+-- ============================================================
+-- 04_seed.sql — first owner + a smoke test
+-- ============================================================
+-- STEP 1 (manual, in Supabase dashboard): create the owner's auth user
+--   Authentication → Users → Add user → email + password.
+-- STEP 2: copy that user's UUID and run:
+--   insert into staff (id, name, role) values ('<UUID>', 'Poch', 'owner');
+
+-- ── Smoke test (run after an owner exists; uses that owner as auth.uid) ──
+-- In the SQL editor, set the role context is not trivial; instead test the
+-- functions from the app once auth is wired, OR temporarily test the math:
+--
+-- select * from customers;  -- confirm access_token auto-generated
+--
+-- Expected flow to verify manually once a staff session exists:
+--   1. create customer (tier=founder)
+--   2. load_wallet(id, 2000, 'cash')      -> paid 2000, bonus 300, total 2300
+--   3. deduct_wallet(id, 500, 'Wash & Fold') -> bonus consumed first:
+--                                                bonus 0? no: 300 bonus -> 300 used,
+--                                                200 from paid -> paid 1800, bonus 0, total 1800
+--   4. get_perks(id)                      -> active true, until = load_date + 90
+--
+-- Verify append-only guard:
+--   update wallet_transactions set amount = 0 where id = 1;  -- must RAISE
+--   delete from wallet_transactions where id = 1;            -- must RAISE

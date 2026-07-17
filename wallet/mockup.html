@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lala Wash Wallet — Staff App Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2563EB;--blue-dark:#1E40AF;--navy:#0F172A;--surface:#F8FAFC;--alt:#F1F5F9;
+  --text:#0F172A;--text2:#475569;--muted:#94A3B8;--border:rgba(0,0,0,.08);
+  --green:#15be53;--red:#DC2626;--amber:#F59E0B;
+  --shadow:0 4px 24px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04);
+  --radius:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:#E2E8F0;color:var(--text);
+  -webkit-font-smoothing:antialiased;padding:24px;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto}
+h1.page-title{font-size:22px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px}
+.page-sub{color:var(--text2);font-size:14px;margin-bottom:24px}
+.phones{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+.phone{width:340px;background:#fff;border-radius:32px;box-shadow:0 20px 60px rgba(0,0,0,.18);
+  overflow:hidden;border:1px solid var(--border);display:flex;flex-direction:column;min-height:680px}
+.phone-label{text-align:center;font-size:12px;font-weight:600;color:var(--text2);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.col{display:flex;flex-direction:column;align-items:center}
+/* app chrome */
+.appbar{background:#fff;padding:16px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:2}
+.appbar .logo{font-size:20px}.appbar .title{font-weight:700;font-size:16px}
+.appbar .role{margin-left:auto;font-size:11px;font-weight:600;color:var(--blue);
+  background:rgba(37,99,235,.1);padding:4px 10px;border-radius:999px}
+.body{padding:18px;flex:1;overflow-y:auto}
+/* search */
+.search{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;
+  font-size:15px;font-family:inherit;margin-bottom:14px}
+.crow{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);
+  border-radius:14px;margin-bottom:8px;cursor:pointer;transition:.15s}
+.crow:hover{border-color:var(--blue);background:var(--surface)}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--gradient,linear-gradient(135deg,#2563EB,#7C3AED));
+  color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px}
+.crow .meta{flex:1}.crow .nm{font-weight:600;font-size:15px}
+.crow .mb{font-size:13px;color:var(--muted)}
+.badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+.badge.founder{background:#FEF3C7;color:#92400E}.badge.starter{background:#E0E7FF;color:#3730A3}
+/* balance card */
+.balcard{background:linear-gradient(135deg,#2563EB,#1E40AF);color:#fff;border-radius:var(--radius);
+  padding:22px;margin-bottom:16px;box-shadow:0 8px 24px rgba(37,99,235,.3)}
+.balcard .lbl{font-size:12px;opacity:.8;text-transform:uppercase;letter-spacing:.06em}
+.balcard .amt{font-size:38px;font-weight:800;letter-spacing:-1px;margin:2px 0 8px}
+.balcard .split{font-size:13px;opacity:.9}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;margin-top:12px}
+.pill.active{background:rgba(21,190,83,.25);color:#DCFCE7}
+.pill.expired{background:rgba(255,255,255,.2);color:#fff}
+.chips{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.chip{font-size:12px;font-weight:600;padding:8px 12px;border-radius:12px;border:1.5px solid var(--border);
+  display:flex;align-items:center;gap:6px;cursor:pointer;background:#fff}
+.chip.claimed{background:var(--surface);color:var(--muted);border-style:dashed}
+.chip.disabled{opacity:.45}
+.cust-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.cust-head .nm{font-weight:700;font-size:18px}.cust-head .mb{font-size:13px;color:var(--muted)}
+.btnrow{display:flex;gap:10px;margin-bottom:20px}
+.btn{flex:1;padding:15px;border-radius:14px;font-weight:700;font-size:15px;font-family:inherit;
+  cursor:pointer;border:none;transition:.15s}
+.btn-load{background:var(--green);color:#fff}
+.btn-deduct{background:var(--navy);color:#fff}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.sec-lbl{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:10px}
+.txn{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.txn .ico{width:34px;height:34px;border-radius:10px;background:var(--surface);display:flex;
+  align-items:center;justify-content:center;font-size:16px}
+.txn .t-meta{flex:1}.txn .t-nm{font-weight:600;font-size:14px}
+.txn .t-dt{font-size:12px;color:var(--muted)}
+.txn .t-amt{font-weight:700;font-size:14px}
+.t-amt.credit{color:var(--green)}.t-amt.debit{color:var(--red)}
+/* load sheet */
+.sheet-title{font-weight:700;font-size:17px;margin-bottom:14px}
+.presets{display:flex;gap:8px;margin-bottom:12px}
+.preset{flex:1;padding:14px 6px;border:1.5px solid var(--border);border-radius:12px;text-align:center;
+  font-weight:700;cursor:pointer;font-size:15px}
+.preset.sel{border-color:var(--blue);background:rgba(37,99,235,.06);color:var(--blue)}
+.toggle{display:flex;gap:8px;margin-bottom:14px}
+.toggle .opt{flex:1;padding:12px;border:1.5px solid var(--border);border-radius:12px;text-align:center;
+  font-weight:600;cursor:pointer;font-size:14px}
+.toggle .opt.sel{border-color:var(--blue);background:rgba(37,99,235,.06);color:var(--blue)}
+.preview{background:#ECFDF5;border:1px solid #A7F3D0;border-radius:12px;padding:14px;margin-bottom:16px;
+  font-size:14px;color:#065F46}
+.preview b{font-size:18px}
+.confirm{width:100%;padding:15px;border-radius:14px;font-weight:700;font-size:15px;border:none;
+  background:var(--blue);color:#fff;cursor:pointer;font-family:inherit}
+.input{width:100%;padding:13px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;
+  font-family:inherit;margin-bottom:12px}
+.note{font-size:12px;color:var(--muted);text-align:center;margin-top:24px}
+/* customer page */
+.cust-brand{text-align:center;padding:20px 0 8px;font-weight:700;font-size:18px}
+.cust-brand span{font-size:22px}
+.readonly-tag{text-align:center;font-size:11px;color:var(--muted);margin-bottom:14px}
+.footer-cta{background:var(--surface);border-radius:14px;padding:16px;text-align:center;
+  font-size:13px;color:var(--text2);margin-top:16px}
+.legend{max-width:900px;margin:32px auto 0;background:#fff;border-radius:16px;padding:20px 24px;box-shadow:var(--shadow)}
+.legend h3{font-size:15px;margin-bottom:10px}
+.legend li{font-size:13px;color:var(--text2);margin-bottom:6px;list-style:none;padding-left:18px;position:relative}
+.legend li:before{content:"→";position:absolute;left:0;color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="page-title">🧺 Lala Wash Wallet — App Mockup</h1>
+  <p class="page-sub">Visual reference lang ito (fake data). Ito ang magiging hitsura ng staff app at customer page. Sabihin mo kung anong babaguhin bago i-code ni lalawashdev.</p>
+
+  <div class="phones">
+    <!-- Staff: Search -->
+    <div class="col">
+      <div class="phone-label">Staff · Search</div>
+      <div class="phone">
+        <div class="appbar"><span class="logo">🧺</span><span class="title">Lala Wash</span><span class="role">Owner</span></div>
+        <div class="body">
+          <input class="search" placeholder="Hanapin — pangalan o mobile…" value="">
+          <div class="crow"><div class="avatar">MS</div><div class="meta"><div class="nm">Maria Santos</div><div class="mb">0917 123 4567</div></div><span class="badge founder">Founder</span></div>
+          <div class="crow"><div class="avatar">JD</div><div class="meta"><div class="nm">Juan dela Cruz</div><div class="mb">0918 555 2323</div></div><span class="badge starter">Starter</span></div>
+          <div class="crow"><div class="avatar">AR</div><div class="meta"><div class="nm">Ana Reyes</div><div class="mb">0920 888 1010</div></div><span class="badge founder">Founder</span></div>
+          <div class="crow" style="border-style:dashed;color:var(--blue);justify-content:center;font-weight:600">+ Bagong Customer</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Staff: Customer detail -->
+    <div class="col">
+      <div class="phone-label">Staff · Customer</div>
+      <div class="phone">
+        <div class="appbar"><span class="logo">←</span><span class="title">Customer</span><span class="role">Owner</span></div>
+        <div class="body">
+          <div class="cust-head"><div class="avatar">MS</div><div><div class="nm">Maria Santos</div><div class="mb">0917 123 4567 · <span class="badge founder">Founder</span></div></div></div>
+          <div class="balcard">
+            <div class="lbl">Wallet Balance</div>
+            <div class="amt">₱1,800.00</div>
+            <div class="split">Paid ₱1,800 · Bonus ₱0 (nagamit na)</div>
+            <span class="pill active">● PERKS ACTIVE hanggang Oct 16</span>
+          </div>
+          <div class="chips">
+            <div class="chip claimed">☕ Welcome drink · Claimed</div>
+            <div class="chip disabled">🎂 Birthday wash · March</div>
+          </div>
+          <div class="btnrow">
+            <button class="btn btn-load">＋ LOAD</button>
+            <button class="btn btn-deduct">－ BAWAS</button>
+          </div>
+          <div class="sec-lbl">Transaction History</div>
+          <div class="txn"><div class="ico">👕</div><div class="t-meta"><div class="t-nm">Wash &amp; Fold</div><div class="t-dt">Jul 18, 2026</div></div><div class="t-amt debit">−₱500.00</div></div>
+          <div class="txn"><div class="ico">🎁</div><div class="t-meta"><div class="t-nm">Founding bonus</div><div class="t-dt">Jul 18, 2026</div></div><div class="t-amt credit">+₱300.00</div></div>
+          <div class="txn"><div class="ico">💰</div><div class="t-meta"><div class="t-nm">Wallet Load · Cash</div><div class="t-dt">Jul 18, 2026</div></div><div class="t-amt credit">+₱2,000.00</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Staff: Load sheet -->
+    <div class="col">
+      <div class="phone-label">Staff · Load</div>
+      <div class="phone">
+        <div class="appbar"><span class="logo">✕</span><span class="title">Load Wallet</span></div>
+        <div class="body">
+          <div class="sheet-title">Magkano ang i-lo-load?</div>
+          <div class="presets"><div class="preset">₱1,000</div><div class="preset sel">₱2,000</div><div class="preset">Custom</div></div>
+          <div class="sec-lbl">Paraan ng bayad</div>
+          <div class="toggle"><div class="opt sel">Cash</div><div class="opt">GCash</div></div>
+          <div class="preview">Makukuha ni Maria: <b>₱2,300</b><br>₱2,000 load + ₱300 founding bonus 🎁</div>
+          <button class="confirm">CONFIRM LOAD</button>
+          <div class="note">Founding bonus: isang beses lang, sa unang ₱1,000+ load.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer page -->
+    <div class="col">
+      <div class="phone-label">Customer · Private link</div>
+      <div class="phone">
+        <div class="cust-brand"><span>🧺</span> Lala Wash Wallet</div>
+        <div class="readonly-tag">View-only — /w/a3f9…c2</div>
+        <div class="body" style="padding-top:4px">
+          <div class="balcard">
+            <div class="lbl">Kumusta, Maria 👋</div>
+            <div class="amt">₱1,800.00</div>
+            <div class="split">Paid ₱1,800 (never expires) · Bonus ₱0</div>
+            <span class="pill active">● PERKS ACTIVE hanggang Oct 16</span>
+          </div>
+          <div class="sec-lbl">Iyong mga Transaksyon</div>
+          <div class="txn"><div class="ico">👕</div><div class="t-meta"><div class="t-nm">Wash &amp; Fold</div><div class="t-dt">Jul 18, 2026</div></div><div class="t-amt debit">−₱500.00</div></div>
+          <div class="txn"><div class="ico">🎁</div><div class="t-meta"><div class="t-nm">Founding bonus</div><div class="t-dt">Jul 18, 2026</div></div><div class="t-amt credit">+₱300.00</div></div>
+          <div class="txn"><div class="ico">💰</div><div class="t-meta"><div class="t-nm">Wallet Load</div><div class="t-dt">Jul 18, 2026</div></div><div class="t-amt credit">+₱2,000.00</div></div>
+          <div class="footer-cta">Mag-reload sa counter — cash o GCash.<br><b>Balance mo, ikaw lang ang nakakakita.</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <h3>Ano ang nakikita mo</h3>
+    <ul>
+      <li><b>Staff · Search</b> — hanap ng customer, o gumawa ng bago. Tap para makita ang wallet.</li>
+      <li><b>Staff · Customer</b> — balance card, perks status, welcome/birthday chips, LOAD at BAWAS buttons, buong history. Owner may makikitang "Void" per transaction.</li>
+      <li><b>Staff · Load</b> — presets, cash/GCash, live preview ng bonus. Isang tap, confirm, tapos.</li>
+      <li><b>Customer · Private link</b> — ite-text mo minsanan. Bukas nila anytime sa phone, walang password, view-only.</li>
+      <li>Hindi pa kasama dito (nasa spec na): Daily Summary dashboard (owner), void/adjust flow, audit log. Nasa <b>SPEC.md</b> lahat.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
