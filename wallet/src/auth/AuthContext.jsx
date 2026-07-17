@@ -1,0 +1,44 @@
+import { createContext, useContext, useEffect, useState } from 'react'
+
+const AuthContext = createContext(null)
+
+export function AuthProvider({ children }) {
+  const [staff, setStaff] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem('staff')) } catch { return null }
+  })
+  const [user, setUser] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem('user')) } catch { return null }
+  })
+
+  function login(authUser, staffRecord) {
+    sessionStorage.setItem('staff', JSON.stringify(staffRecord))
+    sessionStorage.setItem('user', JSON.stringify(authUser))
+    setStaff(staffRecord)
+    setUser(authUser)
+  }
+
+  function logout() {
+    sessionStorage.removeItem('staff')
+    sessionStorage.removeItem('user')
+    setStaff(null)
+    setUser(null)
+  }
+
+  const value = {
+    user,
+    staff,
+    loading: false,
+    login,
+    logout,
+    isOwner: staff?.role === 'owner',
+    isStaff: !!staff,
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
+
+export function useAuth() {
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error('useAuth must be inside AuthProvider')
+  return ctx
+}
