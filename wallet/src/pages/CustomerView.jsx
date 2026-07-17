@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { supabase } from '../supabase'
+import QRCode from '../components/QRCode'
 
 export default function CustomerView() {
   const { token } = useParams()
@@ -52,11 +53,12 @@ export default function CustomerView() {
     }
   }
 
-  // get_my_wallet returns customer data
+  // get_my_wallet (returns jsonb) gives: name, tier, paid, bonus, total,
+  // perks_active, perks_until, members, transactions[{date, type, amount, description, member}]
   const customer = Array.isArray(data) ? data[0] : data
-  const total = customer?.total_balance ?? customer?.balance_total ?? 0
-  const paid = customer?.paid_balance ?? customer?.balance_paid ?? 0
-  const bonus = customer?.bonus_balance ?? customer?.balance_bonus ?? 0
+  const total = customer?.total ?? 0
+  const paid = customer?.paid ?? 0
+  const bonus = customer?.bonus ?? 0
   const perksActive = customer?.perks_active
   const perksUntil = customer?.perks_until
   const transactions = customer?.transactions || []
@@ -73,7 +75,7 @@ export default function CustomerView() {
 
       <div className="app-body">
         <div className="balcard">
-          <div className="lbl">{customer?.full_name || 'Customer'}</div>
+          <div className="lbl">{customer?.name || 'Customer'}</div>
           <div className="amt">₱{Number(total).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</div>
           <div className="split">
             Paid ₱{Number(paid).toLocaleString('en-PH', { minimumFractionDigits: 2 })} · Bonus ₱{Number(bonus).toLocaleString('en-PH', { minimumFractionDigits: 2 })}
@@ -84,16 +86,47 @@ export default function CustomerView() {
           </div>
         </div>
 
+        {/* QR Code — i-scan ng staff */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '16px',
+            background: '#fff',
+            borderRadius: 16,
+            marginBottom: 16,
+            border: '1.5px solid var(--border)',
+          }}
+        >
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text2)', marginBottom: 10 }}>
+            🧺 Show this QR to staff
+          </div>
+          <QRCode value={token} size={140} />
+          <div
+            style={{
+              marginTop: 8,
+              fontSize: 11,
+              color: 'var(--muted)',
+              textAlign: 'center',
+              maxWidth: 200,
+              wordBreak: 'break-all',
+            }}
+          >
+            {token}
+          </div>
+        </div>
+
         {transactions.length > 0 && (
           <div>
             <div className="sec-lbl">Recent Transactions</div>
             {transactions.map((txn, i) => {
               const isCredit = (txn.amount ?? 0) >= 0
-              const date = txn.created_at
-                ? new Date(txn.created_at).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+              const date = txn.date
+                ? new Date(txn.date).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
                 : ''
               return (
-                <div className="txn" key={txn.id || i}>
+                <div className="txn" key={i}>
                   <div className="ico">{isCredit ? '💰' : '👕'}</div>
                   <div className="t-meta">
                     <div className="t-nm">{txn.description || (isCredit ? 'Load' : 'Deduct')}</div>

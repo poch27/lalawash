@@ -50,16 +50,28 @@ export default function Search() {
   async function handleScan(qrText) {
     setShowScanner(false)
     try {
+      // Try family member QR first
       const { data, error } = await supabase.rpc('scan_qr', { p_qr: qrText })
-      if (error) throw error
-      if (!data || data.length === 0) {
+      if (!error && data && (Array.isArray(data) ? data.length > 0 : true)) {
+        const scanned = Array.isArray(data) ? data[0] : data
+        sessionStorage.setItem(`scan_${scanned.customer_id}`, scanned.member_id)
+        navigate(`/customer/${scanned.customer_id}`)
+        return
+      }
+
+      // Fallback: scan QR contains customer's access_token
+      const { data: cust, error: custErr } = await supabase
+        .from('customers')
+        .select('id, full_name')
+        .eq('access_token', qrText.trim())
+        .eq('is_active', true)
+        .single()
+
+      if (custErr || !cust) {
         toast('QR not recognized')
         return
       }
-      const scanned = Array.isArray(data) ? data[0] : data
-      // Store scanned member so CustomerDetail pre-selects them
-      sessionStorage.setItem(`scan_${scanned.customer_id}`, scanned.member_id)
-      navigate(`/customer/${scanned.customer_id}`)
+      navigate(`/customer/${cust.id}`)
     } catch (e) {
       toast(e.message || 'QR not recognized')
     }

@@ -158,6 +158,39 @@ export default function CustomerDetail() {
         </button>
       </div>
 
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          background: 'var(--surface)',
+          borderRadius: 12,
+          padding: '10px 14px',
+          marginBottom: 16,
+          fontSize: 13,
+        }}
+      >
+        <span style={{ color: 'var(--muted)', flex: 1 }}>Nawalan ng wallet link?</span>
+        <button
+          onClick={() => {
+            const link = `${window.location.origin}/w/${customer.access_token}`
+            navigator.clipboard.writeText(link).then(() => toast('Wallet link copied!'))
+          }}
+          style={{ background: 'none', border: 'none', color: 'var(--blue)', fontWeight: 600, cursor: 'pointer', fontSize: 13 }}
+        >
+          📋 Copy Link
+        </button>
+        <button
+          onClick={() => {
+            const link = `${window.location.origin}/w/${customer.access_token}`
+            window.open(`sms:?body=Your Lala Wash Wallet: ${link}`, '_blank')
+          }}
+          style={{ background: 'none', border: 'none', color: 'var(--blue)', fontWeight: 600, cursor: 'pointer', fontSize: 13 }}
+        >
+          💬 Send SMS
+        </button>
+      </div>
+
       <BalanceCard balance={balance} perks={perks} />
       <PerkChips perks={perks} claims={claims} onClaim={handleClaim} customer={customer} />
 
