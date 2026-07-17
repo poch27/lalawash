@@ -17,18 +17,22 @@ export default function Search() {
   const [showScanner, setShowScanner] = useState(false)
 
   const search = useCallback(async (q) => {
-    if (!q || q.trim().length < 2) {
-      setCustomers([])
-      return
-    }
     setLoading(true)
     try {
-      const { data, error } = await supabase
+      let request = supabase
         .from('customers')
         .select('id, full_name, mobile, tier')
-        .or(`full_name.ilike.%${q}%,mobile.ilike.%${q}%`)
-        .limit(20)
+        .eq('is_active', true)
 
+      const trimmed = q.trim()
+      if (trimmed.length >= 1) {
+        request = request.or(`full_name.ilike.%${trimmed}%,mobile.ilike.%${trimmed}%`)
+      } else {
+        // No query yet: show the customer list so staff has something to browse.
+        request = request.order('full_name', { ascending: true })
+      }
+
+      const { data, error } = await request.limit(50)
       if (error) throw error
       setCustomers(data || [])
     } catch (e) {
@@ -108,9 +112,9 @@ export default function Search() {
 
       {loading && <p style={{ fontSize: '13px', color: 'var(--muted)' }}>Searching...</p>}
 
-      {!loading && query && customers.length === 0 && (
+      {!loading && customers.length === 0 && (
         <p style={{ fontSize: '14px', color: 'var(--muted)', textAlign: 'center', marginTop: 40 }}>
-          No customers found.
+          {query ? 'No customers found.' : 'Wala pang customer. Tap + to add one.'}
         </p>
       )}
 
