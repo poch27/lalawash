@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lala Wash Wallet — Load Once. Wash Anytime.</title>
-<meta name="description" content="Preload your Lala Wash Wallet, enjoy bonus laundry credits, exclusive member perks, and faster checkout every visit.">
+<meta name="description" content="An exclusive founding-member invitation for Lala Wash customers. Reserve your slot free, load once, and get up to ₱300 FREE laundry credits. Only 25 founding slots, until July 31.">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
@@ -666,9 +666,53 @@ ul, ol { list-style: none; }
 }
 .tiers__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 28px;
   align-items: stretch;
+  max-width: 880px;
+  margin: 0 auto;
+}
+.future-pricing {
+  max-width: 880px;
+  margin: 48px auto 0;
+  padding: 28px 32px;
+  background: var(--surface-light);
+  border: 1px dashed var(--border-medium);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+.future-pricing__title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.future-pricing__row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.future-pricing__item {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+.future-pricing__item strong {
+  display: block;
+  font-size: 17px;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+.future-pricing__note {
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue-primary);
+}
+@media (max-width: 640px) {
+  .future-pricing__row { gap: 20px; }
 }
 .tier-card {
   background: var(--white);
@@ -996,7 +1040,7 @@ ul, ol { list-style: none; }
   font-weight: 700;
   font-size: 16px;
 }
-.register__form-mockup {
+.register__form {
   background: var(--surface-light);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
@@ -1217,7 +1261,7 @@ ul, ol { list-style: none; }
   .how__card { padding: 24px 16px; }
   .tier-card { padding: 28px 20px; }
   .benefit-card { padding: 24px 18px; }
-  .register__form-mockup { padding: 24px 18px; }
+  .register__form { padding: 24px 18px; }
 }
 </style>
 </head>
@@ -1233,10 +1277,10 @@ ul, ol { list-style: none; }
     </a>
     <div class="nav__links">
       <a href="#how" class="nav__link">How It Works</a>
-      <a href="#tiers" class="nav__link">Wallets</a>
+      <a href="#tiers" class="nav__link">The Offer</a>
       <a href="#benefits" class="nav__link">Perks</a>
       <a href="#faq" class="nav__link">FAQ</a>
-      <a href="#register" class="btn btn--primary btn--nav">Join the Wallet</a>
+      <a href="#register" class="btn btn--primary btn--nav">Reserve My Slot</a>
     </div>
     <button class="nav__hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -1247,10 +1291,10 @@ ul, ol { list-style: none; }
 <!-- Mobile Menu -->
 <div class="nav__mobile" id="mobileMenu">
   <a href="#how" class="nav__link">How It Works</a>
-  <a href="#tiers" class="nav__link">Wallets</a>
+  <a href="#tiers" class="nav__link">The Offer</a>
   <a href="#benefits" class="nav__link">Perks</a>
   <a href="#faq" class="nav__link">FAQ</a>
-  <a href="#register" class="btn btn--primary">Join the Wallet</a>
+  <a href="#register" class="btn btn--primary">Reserve My Slot</a>
 </div>
 
 <!-- ============================================================
@@ -1261,27 +1305,27 @@ ul, ol { list-style: none; }
   <div class="hero__blob hero__blob--2"></div>
   <div class="container hero__grid">
     <div class="hero__content">
-      <p class="hero__eyebrow">Digital Wallet for Laundry</p>
+      <p class="hero__eyebrow">Founding Member Invitation — Existing Customers Only</p>
       <h1 class="hero__title">Load Once.<br><span>Wash Anytime.</span></h1>
       <p class="hero__desc">
-        Preload your Lala Wash Wallet, enjoy bonus laundry credits, exclusive member perks, and faster checkout every visit.
+        You're one of only 45 customers invited — but just 25 founding slots are open. Reserve yours free, pay nothing until your first load.
       </p>
       <div class="hero__ctas">
-        <a href="#register" class="btn btn--primary">Join the Wallet</a>
-        <a href="#how" class="btn btn--ghost">Learn More</a>
+        <a href="#register" class="btn btn--primary">Reserve My Founding Slot</a>
+        <a href="#tiers" class="btn btn--ghost">See the Offer</a>
       </div>
       <div class="hero__stats">
         <div>
-          <div class="hero__stat-number" id="memberCount" data-target="12500">0</div>
-          <div class="hero__stat-label">Wallet Members</div>
+          <div class="hero__stat-number" id="memberCount" data-target="25">0</div>
+          <div class="hero__stat-label">Founding Slots Only</div>
         </div>
         <div>
-          <div class="hero__stat-number">₱2.4M+</div>
-          <div class="hero__stat-label">Credits Loaded</div>
+          <div class="hero__stat-number">+15%</div>
+          <div class="hero__stat-label">Instant Bonus Credits</div>
         </div>
         <div>
-          <div class="hero__stat-number">4.9 ★</div>
-          <div class="hero__stat-label">Google Rating</div>
+          <div class="hero__stat-number">₱0</div>
+          <div class="hero__stat-label">To Reserve — Pay on First Load</div>
         </div>
       </div>
     </div>
@@ -1302,7 +1346,7 @@ ul, ol { list-style: none; }
             <div class="phone-balance-label">Lala Wash Wallet</div>
             <div class="phone-balance-amount" id="phoneBalance">₱1,250.00</div>
             <div class="phone-balance-meta">
-              <span>Plus Member</span>
+              <span>Founding Member</span>
               <span>Since Mar 2026</span>
             </div>
             <div class="phone-balance-badge">● Active</div>
@@ -1396,13 +1440,13 @@ ul, ol { list-style: none; }
         <div class="how__icon">💳</div>
         <div class="how__step">2</div>
         <h3 class="how__title">Choose Load</h3>
-        <p class="how__desc">Pick a wallet tier that fits your laundry needs. Every load comes with bonus credits.</p>
+        <p class="how__desc">Pick your load — ₱1,000 or ₱2,000. Founding bonus credits are added instantly.</p>
       </div>
       <div class="how__card animate-on-scroll animate-on-scroll--delay-2">
         <div class="how__icon">✨</div>
         <div class="how__step">3</div>
         <h3 class="how__title">Wallet Activated</h3>
-        <p class="how__desc">Your balance is ready instantly. Track everything from your phone or at the counter.</p>
+        <p class="how__desc">Your balance is ready instantly. Ask your running balance anytime at the counter — or via text.</p>
       </div>
       <div class="how__card animate-on-scroll animate-on-scroll--delay-3">
         <div class="how__icon">🚀</div>
@@ -1419,62 +1463,69 @@ ul, ol { list-style: none; }
      ============================================================ -->
 <section class="tiers" id="tiers">
   <div class="container">
-    <span class="section-label">Wallet Tiers</span>
-    <h2 class="section-heading">Choose your load. Get more value.</h2>
-    <p class="section-subheading">Every wallet comes loaded with bonus credits. The more you load, the more you save.</p>
+    <span class="section-label">The Founding Offer</span>
+    <h2 class="section-heading">One-time founding bonus. Pick your load.</h2>
+    <p class="section-subheading">Only <strong>25 founding slots</strong>, first come first served — until <strong>July 31</strong>. After that, standard rates apply.</p>
     <div class="tiers__grid">
-      <!-- Essential -->
+      <!-- Starter -->
       <div class="tier-card animate-on-scroll">
-        <h3 class="tier-name">Essential</h3>
+        <h3 class="tier-name">Starter</h3>
         <div class="tier-price">₱1,000</div>
-        <div class="tier-bonus">+₱50 FREE credits</div>
+        <div class="tier-bonus">You get ₱1,100 — +₱100 FREE (10%)</div>
         <ul class="tier-features">
-          <li><span class="tier-check">✓</span> ₱50 FREE Laundry Credits</li>
-          <li><span class="tier-check">✓</span> Digital Laundry Wallet</li>
-          <li><span class="tier-check">✓</span> Faster Checkout</li>
-          <li><span class="tier-check">✓</span> 10% OFF Dash Espresso Signature Drinks & Non-Coffee Drinks</li>
+          <li><span class="tier-check">✓</span> ₱100 FREE credits, added instantly</li>
+          <li><span class="tier-check">✓</span> Balance never expires</li>
+          <li><span class="tier-check">✓</span> Priority Access — ahead of walk-ins</li>
+          <li><span class="tier-check">✓</span> FREE welcome drink at Dash Espresso — any classic drink, on first load</li>
+          <li><span class="tier-check">✓</span> Reload anytime from ₱200</li>
         </ul>
+        <div class="tier-duration">Member perks active for <strong>30 days</strong> per load</div>
         <div class="tier-cta">
-          <a href="#register" class="btn btn--ghost">Get Started</a>
+          <a href="#register" class="btn btn--ghost">Start with ₱1,000</a>
         </div>
       </div>
 
-      <!-- Plus (Featured) -->
+      <!-- Founder (Featured) -->
       <div class="tier-card tier-card--featured animate-on-scroll animate-on-scroll--delay-1">
-        <div class="tier-badge">⭐ Most Popular</div>
-        <h3 class="tier-name">Plus</h3>
-        <div class="tier-price">₱1,499</div>
-        <div class="tier-bonus">+₱100 FREE credits</div>
-        <ul class="tier-features">
-          <li><span class="tier-check">✓</span> ₱100 FREE Laundry Credits</li>
-          <li><span class="tier-check">✓</span> Digital Laundry Wallet</li>
-          <li><span class="tier-check">✓</span> Faster Checkout</li>
-          <li><span class="tier-check">✓</span> 2 Priority Wash Passes every month</li>
-          <li><span class="tier-check">✓</span> 10% OFF Dash Espresso Signature Drinks & Non-Coffee Drinks</li>
-        </ul>
-        <div class="tier-duration">Membership: <strong>45 Days</strong></div>
-        <div class="tier-cta">
-          <a href="#register" class="btn btn--primary">Join Plus</a>
-        </div>
-      </div>
-
-      <!-- Family -->
-      <div class="tier-card animate-on-scroll animate-on-scroll--delay-2">
-        <h3 class="tier-name">Family</h3>
+        <div class="tier-badge">⭐ Best Value — Founder</div>
+        <h3 class="tier-name">Founder</h3>
         <div class="tier-price">₱2,000</div>
-        <div class="tier-bonus">+₱200 FREE credits</div>
+        <div class="tier-bonus">You get ₱2,300 — +₱300 FREE (15%)</div>
         <ul class="tier-features">
-          <li><span class="tier-check">✓</span> ₱200 FREE Laundry Credits</li>
-          <li><span class="tier-check">✓</span> Digital Laundry Wallet</li>
-          <li><span class="tier-check">✓</span> Faster Checkout</li>
-          <li><span class="tier-check">✓</span> 2 Priority Wash Passes every month</li>
-          <li><span class="tier-check">✓</span> 10% OFF Dash Espresso Signature Drinks & Non-Coffee Drinks</li>
+          <li><span class="tier-check">✓</span> ₱300 FREE credits, added instantly</li>
+          <li><span class="tier-check">✓</span> Balance never expires</li>
+          <li><span class="tier-check">✓</span> Founding Member status — a bonus rate we'll never offer again</li>
+          <li><span class="tier-check">✓</span> Priority Access — ahead of walk-ins</li>
+          <li><span class="tier-check">✓</span> 10% OFF Dash Espresso drinks while perks are active</li>
+          <li><span class="tier-check">✓</span> FREE welcome drink at Dash Espresso — any classic drink, on first load</li>
+          <li><span class="tier-check">✓</span> FREE Wash &amp; Fold on your birthday month</li>
+          <li><span class="tier-check">✓</span> Whole family can use one wallet</li>
         </ul>
-        <div class="tier-duration">Membership: <strong>60 Days</strong></div>
+        <div class="tier-duration">Member perks active for <strong>90 days</strong> per load</div>
         <div class="tier-cta">
-          <a href="#register" class="btn btn--ghost">Get Started</a>
+          <a href="#register" class="btn btn--primary">Become a Founder</a>
         </div>
       </div>
+    </div>
+
+    <!-- Future standard pricing — anchor for the founding bonus -->
+    <div class="future-pricing animate-on-scroll">
+      <div class="future-pricing__title">Standard membership pricing after the founding 25</div>
+      <div class="future-pricing__row">
+        <div class="future-pricing__item">
+          <strong>Essential — ₱1,000</strong>
+          +₱50 credits only
+        </div>
+        <div class="future-pricing__item">
+          <strong>Plus — ₱1,500</strong>
+          +₱100 credits only
+        </div>
+        <div class="future-pricing__item">
+          <strong>Family — ₱2,000</strong>
+          +₱200 credits only
+        </div>
+      </div>
+      <div class="future-pricing__note">Founding members lock in up to double the bonus — one time only.</div>
     </div>
   </div>
 </section>
@@ -1484,39 +1535,39 @@ ul, ol { list-style: none; }
      ============================================================ -->
 <section class="benefits" id="benefits">
   <div class="container">
-    <span class="section-label">Why Join</span>
-    <h2 class="section-heading">More than just laundry credits.</h2>
-    <p class="section-subheading">The Lala Wash Wallet unlocks a full ecosystem of perks designed for you.</p>
+    <span class="section-label">Member Perks</span>
+    <h2 class="section-heading">Perks walk-in customers don't get.</h2>
+    <p class="section-subheading">Same laundry shop, better treatment. Here's what changes the moment you become a member.</p>
     <div class="benefits__grid">
       <div class="benefit-card animate-on-scroll">
-        <div class="benefit-icon">💳</div>
-        <h3 class="benefit-title">Digital Wallet</h3>
-        <p class="benefit-desc">Your balance lives in the cloud — accessible at any Lala Wash branch, anytime. No physical cards to lose.</p>
+        <div class="benefit-icon">⏩</div>
+        <h3 class="benefit-title">Priority Access</h3>
+        <p class="benefit-desc">Your laundry gets processed ahead of walk-in customers — even on busy weekends. Members always skip the queue.</p>
       </div>
       <div class="benefit-card animate-on-scroll animate-on-scroll--delay-1">
         <div class="benefit-icon">🎁</div>
-        <h3 class="benefit-title">Bonus Credits</h3>
-        <p class="benefit-desc">Every wallet load comes with free credits. Load ₱1,000, get up to ₱200 extra. That's free laundry on us.</p>
+        <h3 class="benefit-title">Instant Bonus Credits</h3>
+        <p class="benefit-desc">Walk-ins pay full price, every time. Members load ₱2,000 and wash with ₱2,300. Free laundry, from day one.</p>
       </div>
       <div class="benefit-card animate-on-scroll animate-on-scroll--delay-2">
         <div class="benefit-icon">⚡</div>
-        <h3 class="benefit-title">Faster Checkout</h3>
-        <p class="benefit-desc">One tap and you're done. No counting bills, no waiting for change. Your wallet makes checkout instant.</p>
+        <h3 class="benefit-title">Drop &amp; Go Checkout</h3>
+        <p class="benefit-desc">No cash, no change, no waiting. Drop your laundry, say your name, and go — we deduct from your wallet and text you when it's ready.</p>
       </div>
       <div class="benefit-card animate-on-scroll animate-on-scroll--delay-3">
-        <div class="benefit-icon">🏆</div>
-        <h3 class="benefit-title">Priority Wash</h3>
-        <p class="benefit-desc">Plus and Family members get Priority Wash Passes. Skip the queue — your laundry jumps to the front.</p>
+        <div class="benefit-icon">🎂</div>
+        <h3 class="benefit-title">Birthday Month Treat</h3>
+        <p class="benefit-desc">Founders get one FREE Wash &amp; Fold during their birthday month, every year their perks are active. Our treat — you just show up.</p>
       </div>
       <div class="benefit-card animate-on-scroll">
         <div class="benefit-icon">☕</div>
         <h3 class="benefit-title">Dash Espresso Perks</h3>
-        <p class="benefit-desc">Wallet members get 10% off at Dash Espresso. Because laundry days are better with good coffee.</p>
+        <p class="benefit-desc">Founders with active perks get 10% off Dash Espresso drinks — while waiting, or any day. Laundry runs are better with good coffee.</p>
       </div>
       <div class="benefit-card animate-on-scroll animate-on-scroll--delay-1">
-        <div class="benefit-icon">📱</div>
-        <h3 class="benefit-title">Reload Anytime</h3>
-        <p class="benefit-desc">Running low? Reload at the counter or online in seconds. Your balance updates instantly — no delays.</p>
+        <div class="benefit-icon">🔒</div>
+        <h3 class="benefit-title">Member-Only Promos</h3>
+        <p class="benefit-desc">First dibs on every promo we run — reload bonuses, free upgrades, seasonal deals. Members hear about it first, via SMS.</p>
       </div>
     </div>
   </div>
@@ -1527,21 +1578,21 @@ ul, ol { list-style: none; }
      ============================================================ -->
 <section class="dark-section">
   <div class="container">
-    <span class="section-label">By the Numbers</span>
-    <h2 class="section-heading">Trusted by thousands of Filipino families.</h2>
-    <p class="section-subheading">The Lala Wash Wallet is growing fast — and our members love the convenience.</p>
+    <span class="section-label">Why Only 25?</span>
+    <h2 class="section-heading">This invite isn't for everyone. It's for you.</h2>
+    <p class="section-subheading">45 customers got this invitation, but only 25 founding slots exist. We're starting small with the people who already trust us — so we can get it right. First to reserve, first served.</p>
     <div class="member-counter">
       <div>
-        <div class="member-stat-number" id="darkMemberCount" data-target="12500">0</div>
-        <div class="member-stat-label">Active Wallet Members</div>
+        <div class="member-stat-number" id="darkMemberCount" data-target="25">0</div>
+        <div class="member-stat-label">Founding Slots</div>
       </div>
       <div>
-        <div class="member-stat-number">98%</div>
-        <div class="member-stat-label">Would Recommend</div>
+        <div class="member-stat-number">Jul 31</div>
+        <div class="member-stat-label">Founding Offer Ends</div>
       </div>
       <div>
-        <div class="member-stat-number">₱200K+</div>
-        <div class="member-stat-label">Bonus Credits Given</div>
+        <div class="member-stat-number">1 min</div>
+        <div class="member-stat-label">To Reserve Your Slot</div>
       </div>
     </div>
   </div>
@@ -1559,7 +1610,7 @@ ul, ol { list-style: none; }
       <div class="rule-card animate-on-scroll">
         <div class="rule-icon">♾️</div>
         <h3 class="rule-title">Balance Never Expires</h3>
-        <p class="rule-desc">As long as you make at least 1 transaction every 12 months, your balance stays yours forever.</p>
+        <p class="rule-desc">Your paid balance never expires. No deadlines, no conditions, no fine print — it stays yours until you use it.</p>
       </div>
       <div class="rule-card animate-on-scroll animate-on-scroll--delay-1">
         <div class="rule-icon">💰</div>
@@ -1568,13 +1619,13 @@ ul, ol { list-style: none; }
       </div>
       <div class="rule-card animate-on-scroll animate-on-scroll--delay-2">
         <div class="rule-icon">⏳</div>
-        <h3 class="rule-title">Bonus Credits Expire</h3>
-        <p class="rule-desc">Bonus credits follow their promotion terms. Your main balance is never affected — only the bonus portion.</p>
+        <h3 class="rule-title">Bonus Credits: 90 Days</h3>
+        <p class="rule-desc">Founding bonus credits are valid for 90 days — plenty of time. Your paid balance is never affected.</p>
       </div>
       <div class="rule-card animate-on-scroll animate-on-scroll--delay-3">
-        <div class="rule-icon">🔄</div>
-        <h3 class="rule-title">Membership Tiers</h3>
-        <p class="rule-desc">Tiers refresh based on your chosen duration. Renew anytime to keep your perks and status active.</p>
+        <div class="rule-icon">📅</div>
+        <h3 class="rule-title">Perks: 30 / 90 Days</h3>
+        <p class="rule-desc">Starter perks run 30 days and Founder perks 90 days per load. Any ₱1,000+ reload restarts them — your balance is never touched.</p>
       </div>
     </div>
   </div>
@@ -1595,7 +1646,7 @@ ul, ol { list-style: none; }
           <span class="faq__arrow">▼</span>
         </summary>
         <div class="faq__answer">
-          <p>No. Your paid wallet balance remains available as long as your account has at least one transaction within a 12-month period.</p>
+          <p>No, never. Your paid balance stays in your wallet until you use it — no deadlines, no conditions.</p>
         </div>
       </details>
       <details class="faq__item animate-on-scroll animate-on-scroll--delay-1">
@@ -1604,34 +1655,43 @@ ul, ol { list-style: none; }
           <span class="faq__arrow">▼</span>
         </summary>
         <div class="faq__answer">
-          <p>Yes. Promotional bonus credits expire based on the active wallet promotion.</p>
+          <p>Founding bonus credits are valid for <strong>90 days</strong> from your first load. Your paid balance never expires.</p>
         </div>
       </details>
       <details class="faq__item animate-on-scroll animate-on-scroll--delay-2">
         <summary class="faq__question">
-          Can I reload anytime?
+          How long do my member perks last?
           <span class="faq__arrow">▼</span>
         </summary>
         <div class="faq__answer">
-          <p>Yes. Minimum reload is <strong>₱200</strong>.</p>
+          <p>Starter perks run for <strong>30 days</strong> and Founder perks for <strong>90 days</strong> from your load — same as your bonus credits, so everything in your Founder load is good for 3 months. Perks simply pause after that until your next ₱1,000+ load reactivates them. Your wallet balance is never touched.</p>
+        </div>
+      </details>
+      <details class="faq__item animate-on-scroll animate-on-scroll--delay-2">
+        <summary class="faq__question">
+          Can my family use my wallet?
+          <span class="faq__arrow">▼</span>
+        </summary>
+        <div class="faq__answer">
+          <p>Yes! One wallet works for the whole household. Anyone you authorize can drop off laundry and pay from your balance.</p>
         </div>
       </details>
       <details class="faq__item animate-on-scroll animate-on-scroll--delay-3">
         <summary class="faq__question">
-          Will every reload renew my membership?
+          How do I load or reload?
           <span class="faq__arrow">▼</span>
         </summary>
         <div class="faq__answer">
-          <p>No. Only qualifying Wallet Loads (₱1,000+) renew your membership.</p>
+          <p>Pay cash or GCash at the counter and your balance updates instantly on our system. Minimum reload is <strong>₱200</strong>, anytime.</p>
         </div>
       </details>
       <details class="faq__item animate-on-scroll">
         <summary class="faq__question">
-          What happens when my membership expires?
+          What if I don't do laundry often?
           <span class="faq__arrow">▼</span>
         </summary>
         <div class="faq__answer">
-          <p>You can continue using your remaining wallet balance. Membership perks such as Priority Wash Passes and Dash Espresso discounts are paused until you renew with a qualifying Wallet Load.</p>
+          <p>No pressure — your balance sits safely until you need it, kahit gaano katagal. It never expires. Start with ₱1,000 and see how it feels.</p>
         </div>
       </details>
     </div>
@@ -1644,65 +1704,27 @@ ul, ol { list-style: none; }
 <section class="register" id="register">
   <div class="container register__grid">
     <div class="register__info animate-on-scroll">
-      <span class="section-label">Get Started</span>
-      <h2 class="section-heading">Ready to load up?</h2>
-      <p class="section-subheading">Reserve your Lala Wash Wallet now. We'll have everything ready when you visit.</p>
+      <span class="section-label">Reserve Your Slot</span>
+      <h2 class="section-heading">25 slots. First to reserve, first served.</h2>
+      <p class="section-subheading">Reserve below — takes 1 minute, pay nothing now. If you're in the first 25, your founding slot is locked in and we'll confirm by SMS.</p>
       <div class="register__perks">
         <div class="register__perk">
-          <span class="register__perk-icon">✓</span> No commitment — load only when you need it
+          <span class="register__perk-icon">✓</span> Reserving is 100% free — pay only on your first load, at the counter
         </div>
         <div class="register__perk">
-          <span class="register__perk-icon">✓</span> Bonus credits on your first load
+          <span class="register__perk-icon">✓</span> Up to ₱300 FREE credits + a FREE Dash Espresso classic drink on your first load
         </div>
         <div class="register__perk">
-          <span class="register__perk-icon">✓</span> Setup takes less than 2 minutes at any branch
+          <span class="register__perk-icon">✓</span> Balance never expires — use it at your own pace
         </div>
         <div class="register__perk">
-          <span class="register__perk-icon">✓</span> Your data is secure — we never share your info
+          <span class="register__perk-icon">✓</span> Your data stays with us — never shared, never sold
         </div>
       </div>
     </div>
 
-    <div class="register__form-mockup animate-on-scroll animate-on-scroll--delay-1">
-      <h3 class="register__form-title">Reserve My Wallet</h3>
-      <div class="form-field">
-        <label class="form-label" for="fullName">Full Name</label>
-        <input type="text" id="fullName" class="form-input" placeholder="Juan dela Cruz">
-      </div>
-      <div class="form-field">
-        <label class="form-label" for="mobile">Mobile Number</label>
-        <input type="tel" id="mobile" class="form-input" placeholder="+63 9XX XXX XXXX">
-      </div>
-      <div class="form-field">
-        <label class="form-label" for="email">Email Address</label>
-        <input type="email" id="email" class="form-input" placeholder="juan@example.com">
-      </div>
-      <div class="form-field">
-        <label class="form-label" for="tier">Preferred Wallet Load</label>
-        <select id="tier" class="form-select">
-          <option value="">Select a tier…</option>
-          <option value="essential">Essential — ₱1,000 (+₱50 bonus)</option>
-          <option value="plus">Plus — ₱1,499 (+₱100 bonus) ⭐</option>
-          <option value="family">Family — ₱2,000 (+₱200 bonus)</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label class="form-label" for="branch">Preferred Branch</label>
-        <select id="branch" class="form-select">
-          <option value="">Select a branch…</option>
-          <option value="qc">Quezon City - Main</option>
-          <option value="makati">Makati</option>
-          <option value="bgc">BGC</option>
-          <option value="cebu">Cebu</option>
-          <option value="other">Other / Not sure yet</option>
-        </select>
-      </div>
-      <button class="btn btn--primary" style="width:100%; margin-top:8px;" onclick="alert('🎉 Thanks for your interest! Visit any Lala Wash branch to complete your wallet setup.')">
-        Reserve My Wallet
-      </button>
-      <p class="register__note">
-        This is a reservation only. Complete your setup at any Lala Wash branch — we'll have your wallet ready.
-      </p>
+    <div class="register__form animate-on-scroll animate-on-scroll--delay-1">
+      <script type="text/javascript" src="https://form.jotform.com/jsform/261967520686065"></script>
     </div>
   </div>
 </section>
@@ -1725,7 +1747,7 @@ ul, ol { list-style: none; }
       <div>
         <h4 class="footer__heading">Wallet</h4>
         <div class="footer__links">
-          <a href="#tiers">Tiers &amp; Pricing</a>
+          <a href="#tiers">Founding Offer</a>
           <a href="#benefits">Member Perks</a>
           <a href="#rules">Wallet Rules</a>
           <a href="#faq">FAQ</a>
@@ -1845,11 +1867,11 @@ ul, ol { list-style: none; }
       // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = Math.floor(startVal + (target - startVal) * eased);
-      el.textContent = current.toLocaleString('en-US') + '+';
+      el.textContent = current.toLocaleString('en-US');
       if (progress < 1) {
         requestAnimationFrame(update);
       } else {
-        el.textContent = target.toLocaleString('en-US') + '+';
+        el.textContent = target.toLocaleString('en-US');
       }
     }
 

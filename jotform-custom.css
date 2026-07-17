@@ -1,0 +1,144 @@
+/* ============================================
+   Lala Wash — Jotform Custom CSS
+   Paste this in: Form Builder → Form Designer
+   → Styles → Custom CSS
+   ============================================ */
+
+/* ── Import Inter font ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Global ── */
+* {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+/* ── Form container ── */
+.form-all {
+  background: #FFFFFF !important;
+  border-radius: 20px !important;
+  box-shadow: 0px 4px 24px rgba(0,0,0,0.06), 0px 1px 4px rgba(0,0,0,0.04) !important;
+  padding: 8px !important;
+  max-width: 100% !important;
+}
+
+/* ── Labels ── */
+.form-label {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #0F172A !important;
+  margin-bottom: 6px !important;
+}
+
+/* ── Input fields ── */
+.form-textbox, .form-dropdown, .form-textarea {
+  border: 1.5px solid rgba(0,0,0,0.1) !important;
+  border-radius: 12px !important;
+  padding: 14px 16px !important;
+  font-size: 16px !important;
+  color: #0F172A !important;
+  background: #FFFFFF !important;
+  transition: all 0.2s ease !important;
+  box-shadow: none !important;
+}
+
+.form-textbox:focus, .form-dropdown:focus {
+  border-color: #2563EB !important;
+  box-shadow: 0px 0px 0px 3px rgba(37,99,235,0.12) !important;
+  outline: none !important;
+}
+
+.form-textbox::placeholder {
+  color: #94A3B8 !important;
+}
+
+/* ── Dropdown arrow ── */
+.form-dropdown {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+}
+
+/* ── Submit button ── */
+.form-submit-button {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  padding: 14px 32px !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  width: 100% !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0px 4px 16px rgba(37,99,235,0.3) !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.form-submit-button:hover {
+  background: #1E40AF !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0px 8px 24px rgba(37,99,235,0.4) !important;
+}
+
+/* ── Section headers ── */
+.form-header {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+  letter-spacing: -0.5px !important;
+  padding-bottom: 8px !important;
+}
+
+.form-subHeader {
+  font-size: 15px !important;
+  color: #475569 !important;
+  font-weight: 400 !important;
+}
+
+/* ── Page break / progress ── */
+.form-pagebreak-back,
+.form-pagebreak-next {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+}
+
+/* ── Required asterisk ── */
+.form-required {
+  color: #2563EB !important;
+}
+
+/* ── File upload area ── */
+.form-upload {
+  border: 2px dashed rgba(0,0,0,0.1) !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  background: #F8FAFC !important;
+}
+
+/* ── Hide Jotform branding (if on paid plan) ── */
+.jotform-form .formFooter {
+  display: none !important;
+}
+
+/* ── Mobile-friendly spacing ── */
+.form-line {
+  margin-bottom: 20px !important;
+}
+
+@media (max-width: 480px) {
+  .form-all {
+    padding: 4px !important;
+    border-radius: 16px !important;
+  }
+  .form-textbox, .form-dropdown {
+    padding: 12px 14px !important;
+    font-size: 15px !important;
+  }
+  .form-submit-button {
+    padding: 14px 24px !important;
+  }
+}
