@@ -10,11 +10,32 @@ view, void/adjust, daily summary, audit log, perk-claim tracking.
 ## Stack (fixed)
 - **DB/Auth/API:** Supabase project `lalawash-wallet` (Postgres 17). Apply the 3 SQL
   files in order, then `04_seed.sql`.
-- **Frontend:** single-page web app, vanilla or lightweight (no heavy framework needed).
-  Use the Supabase JS client (`@supabase/supabase-js`) via CDN ESM import. Deploy to
-  Cloudflare Pages, same as the landing page.
+- **Frontend:** **React + Vite**, built as an installable **PWA** (`vite-plugin-pwa`).
+  Routing via **React Router**. Supabase access via `@supabase/supabase-js`.
+  Deploy to **Cloudflare Pages** (same as the landing page).
+- **Why this stack:** PWA = installable on any phone home screen, ₱0, no app-store review,
+  instant updates. The same React codebase can later be wrapped with **Capacitor** to ship
+  to the Apple App Store / Google Play *without a rewrite* — so the app-store door stays
+  open, but is NOT built now (defer until there's a real reason; Apple = $99/yr + review).
 - **Design language:** reuse the landing page's tokens — Inter font, `#2563EB` primary,
   `#0F172A` navy, `#F8FAFC` surfaces, 20px card radius, soft shadows. Mobile-first.
+  `mockup.html` in this folder is the visual source of truth for look & layout.
+
+## Skills the frontend dev needs
+React (hooks) · Vite · React Router · `@supabase/supabase-js` (auth + `.rpc()`) ·
+CSS/Tailwind (tokens above) · `vite-plugin-pwa` (manifest + service worker) ·
+Cloudflare Pages deploy. **NOT needed:** wallet math or security — all of that lives in
+the Postgres functions; the frontend only calls RPCs and renders results.
+
+## Routes
+| Path | Screen | Auth |
+|---|---|---|
+| `/login` | S1 | public |
+| `/` | S2 search | staff |
+| `/customer/:id` | S3 detail (+ S4/S5 sheets) | staff |
+| `/new` | S6 new customer | staff |
+| `/summary` | S7 daily summary | owner |
+| `/w/:token` | C1 customer view | public (token) |
 
 ## Auth model
 - **Staff:** Supabase email+password. Each staff = one `auth.users` row + one `staff` row.
