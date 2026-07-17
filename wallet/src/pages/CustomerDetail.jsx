@@ -51,7 +51,7 @@ export default function CustomerDetail() {
 
       if (custRes.error) throw custRes.error
       setCustomer(custRes.data)
-      setBalance(balRes.data || { paid: 0, bonus: 0, total: 0 })
+      setBalance(balRes.data?.[0] || { paid: 0, bonus: 0, total: 0 })
       setPerks(perkRes.data?.[0] || null)
       setClaims(claimRes.data || [])
       setTransactions(txnRes.data || [])
@@ -71,10 +71,11 @@ export default function CustomerDetail() {
       const { data, error } = await supabase.rpc('load_wallet', {
         p_customer: id,
         p_amount: amount,
-        p_method: method,
+        p_method: method.toLowerCase(),
       })
       if (error) throw error
-      toast(`Loaded ₱${amount.toLocaleString()}! New balance: ₱${data.total.toLocaleString()}`)
+      const row = data?.[0]
+      toast(`Loaded ₱${amount.toLocaleString()}! New balance: ₱${(row?.total ?? 0).toLocaleString()}`)
       fetchData()
     } catch (e) {
       toast(e.message || 'Load failed')
@@ -87,7 +88,8 @@ export default function CustomerDetail() {
       if (member) params.p_member = member
       const { data, error } = await supabase.rpc('deduct_wallet', params)
       if (error) throw error
-      toast(`Deducted ₱${amount.toLocaleString()} — remaining: ₱${data.total.toLocaleString()}`)
+      const row = data?.[0]
+      toast(`Deducted ₱${amount.toLocaleString()} — remaining: ₱${(row?.total ?? 0).toLocaleString()}`)
       setScanMember(null)
       fetchData()
     } catch (e) {

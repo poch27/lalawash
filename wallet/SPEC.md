@@ -61,6 +61,16 @@ the Postgres functions; the frontend only calls RPCs and renders results.
 with their own `qr_token`. The primary member is auto-created by a DB trigger on customer
 insert. `deduct_wallet` takes an optional `p_member` to record WHO used the wallet.
 
+**⚠️ Gotcha — `returns table` RPCs come back as an ARRAY, not an object.**
+`get_balance`, `get_perks`, `load_wallet`, `deduct_wallet`, `adjust_wallet` are all
+`returns table (...)` in Postgres, so `supabase.rpc(...)` resolves `data` as
+`[{paid, bonus, total}]` (or `[{active, until}]`), never a plain object. Always index
+`data?.[0]` before reading fields. (`get_my_wallet`, `daily_summary`, `scan_qr` are
+`returns jsonb` — those DO come back as plain objects, no indexing needed.) This exact
+bug shipped once already (balance always showed ₱0.00, load/deduct crashed on
+`data.total` — fixed 2026-07-18 in `CustomerDetail.jsx`) — don't reintroduce it in new
+screens that call these RPCs.
+
 Direct table reads (via PostgREST, RLS-scoped): `customers` (search), `wallet_transactions`
 (history), `perk_claims`, `audit_log` (owner).
 
