@@ -54,7 +54,12 @@ the Postgres functions; the frontend only calls RPCs and renders results.
 | `adjust_wallet` | owner | `p_customer, p_amount, p_reason` | `{paid,bonus,total}` |
 | `claim_perk` | staff | `p_customer, p_perk` | void |
 | `daily_summary` | staff | `p_day?` | summary json |
-| `get_my_wallet` | anon | `p_token` | full customer view json |
+| `get_my_wallet` | anon | `p_token` | full customer view json (incl. members + per-txn member) |
+| `scan_qr` | staff | `p_qr` | `{customer_id, full_name, tier, member_id, member_name, is_primary}` |
+
+**Family model (Model B):** one wallet (`customers` row) has many `wallet_members`, each
+with their own `qr_token`. The primary member is auto-created by a DB trigger on customer
+insert. `deduct_wallet` takes an optional `p_member` to record WHO used the wallet.
 
 Direct table reads (via PostgREST, RLS-scoped): `customers` (search), `wallet_transactions`
 (history), `perk_claims`, `audit_log` (owner).
@@ -111,6 +116,21 @@ Direct table reads (via PostgREST, RLS-scoped): `customers` (search), `wallet_tr
 - Cards: Cash loaded, GCash loaded, Total deducted, Bonus granted, Txn count.
 - **Expected cash in drawer = Cash loaded** (GCash and deducts don't touch the drawer).
 - Below: audit_log feed for the day (who did what).
+
+**S8 · QR Scan (staff)**
+- Button on S2 header: "Scan QR". Opens camera via `html5-qrcode` (or `@zxing/browser`).
+- QR content = the member's `qr_token` string. On read → `rpc('scan_qr',{p_qr})` →
+  navigate to S3 for that `customer_id`, with the scanned `member_id` pre-selected so
+  S5 deducts pass `p_member`.
+- Invalid/unknown QR → toast "QR not recognized".
+
+**S9 · Members (inside S3)**
+- Section on customer detail: list `wallet_members` (name, PRIMARY badge, active toggle).
+- "+ Add member" (name, optional mobile) → insert into `wallet_members` → show that
+  member's QR (render `qr_token` as a QR image via a JS QR lib, e.g. `qrcode`) with
+  "Save/Print" guidance. Staff shows the customer how to screenshot it.
+- Deduct flow (S5): if arrived via QR scan, the member is pre-attached; otherwise an
+  optional "Sino ang nag-drop off?" member picker (default: primary).
 
 ### CUSTOMER PAGE (public, token URL `/w/<token>`)
 

@@ -55,11 +55,18 @@ business rules). Visual reference: **`mockup.html`** (open in a browser). Match 
 4. **S6 new customer** → `from('customers').insert({...}).select().single()`; show the
    returned `access_token`; build the share link `${origin}/w/${access_token}`.
 5. **C1 customer page** at `/w/:token` (public) → `rpc('get_my_wallet',{p_token})`.
-6. Medium layer: **S7 daily summary** (`rpc('daily_summary',{p_day})`, owner-only),
+6. **QR + family (Model B — see SPEC S8/S9):**
+   - Scan (staff): camera via `html5-qrcode`; QR content = member `qr_token` →
+     `rpc('scan_qr',{p_qr})` → S3 with member pre-selected.
+   - Members section on S3: list/add `wallet_members`; render each member's `qr_token`
+     as a QR image (`qrcode` npm lib). Primary member is auto-created by the DB.
+   - Deduct: `rpc('deduct_wallet',{p_customer,p_amount,p_description,p_member})` —
+     `p_member` optional (null = walk-in/primary).
+7. Medium layer: **S7 daily summary** (`rpc('daily_summary',{p_day})`, owner-only),
    per-transaction **Void** (owner → `rpc('void_transaction',{p_txn,p_reason})`),
    **adjust** (`rpc('adjust_wallet',...)`), perk chips (`rpc('claim_perk',...)` +
    read `from('perk_claims')`).
-7. Deploy to Cloudflare Pages. Return the URL.
+8. Deploy to Cloudflare Pages. Return the URL.
 
 ## Rules you must NOT reimplement (already in the DB — just call and display)
 - Balance = sum of ledger. Never compute or store a balance yourself.
