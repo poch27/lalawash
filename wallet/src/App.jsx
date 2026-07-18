@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './auth/AuthContext'
 import { ToastProvider } from './components/Toast'
@@ -5,9 +6,14 @@ import Login from './pages/Login'
 import Search from './pages/Search'
 import CustomerDetail from './pages/CustomerDetail'
 import NewCustomer from './pages/NewCustomer'
-import Summary from './pages/Summary'
 import CustomerView from './pages/CustomerView'
 import Layout from './components/Layout'
+
+const Summary = lazy(() => import('./pages/Summary'))
+
+function LazyFallback() {
+  return <div className="app-body text-center">Loading...</div>
+}
 
 function ProtectedRoute({ children, ownerOnly = false }) {
   const { isStaff, isOwner } = useAuth()
@@ -38,7 +44,9 @@ function AppRoutes() {
           path="summary"
           element={
             <ProtectedRoute ownerOnly>
+              <Suspense fallback={<LazyFallback />}>
               <Summary />
+            </Suspense>
             </ProtectedRoute>
           }
         />

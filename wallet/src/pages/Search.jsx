@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
+import { lazy, Suspense, useState, useEffect, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../supabase'
 import { useAuth } from '../auth/AuthContext'
 import { useToast } from '../components/Toast'
-import QRScanner from '../components/QRScanner'
+
+const QRScanner = lazy(() => import('../components/QRScanner'))
 
 const BADGE_CLASS = { founder: 'founder', starter: 'starter' }
 
@@ -150,10 +151,12 @@ export default function Search() {
       </button>
 
       {showScanner && (
-        <QRScanner
-          onScan={handleScan}
-          onClose={() => setShowScanner(false)}
-        />
+        <Suspense fallback={<div className="app-body text-center">Opening scanner...</div>}>
+          <QRScanner
+            onScan={handleScan}
+            onClose={() => setShowScanner(false)}
+          />
+        </Suspense>
       )}
     </div>
   )
