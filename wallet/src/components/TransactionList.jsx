@@ -13,6 +13,9 @@ const ICON_MAP = {
 
 export default function TransactionList({ transactions, onVoid, balance }) {
   const { isOwner } = useAuth()
+  const reversedTxnIds = new Set(
+    (transactions || []).map((txn) => txn.reverses_txn_id).filter(Boolean),
+  )
 
   return (
     <div>
@@ -31,7 +34,9 @@ export default function TransactionList({ transactions, onVoid, balance }) {
           hour: '2-digit',
           minute: '2-digit',
         })
-        const voided = txn.voided_at
+        const isVoidRow = Boolean(txn.reverses_txn_id)
+        const voided = Boolean(txn.voided_at) || reversedTxnIds.has(txn.id)
+        const isVoidedOriginal = voided && !isVoidRow
 
         return (
           <div className="txn" key={txn.id} style={voided ? { opacity: 0.5, textDecoration: 'line-through' } : {}}>
@@ -40,14 +45,14 @@ export default function TransactionList({ transactions, onVoid, balance }) {
               <div className="t-nm">{desc}{txn.member_name ? ` · ${txn.member_name}` : ''}</div>
               <div className="t-dt">
                 {date}
-                {voided && ' · VOIDED'}
+                {isVoidedOriginal && ' · VOIDED'}
                 {txn.is_founding_bonus && ' · Founding Bonus'}
               </div>
             </div>
             <div className={`t-amt ${isCredit ? 'credit' : 'debit'}`}>
               {isCredit ? '+' : '−'}₱{Math.abs(txn.amount).toLocaleString('en-PH', { minimumFractionDigits: 2 })}
             </div>
-            {isOwner && !voided && (
+            {isOwner && !voided && !isVoidRow && (
               <div
                 className="t-void"
                 onClick={() => {
