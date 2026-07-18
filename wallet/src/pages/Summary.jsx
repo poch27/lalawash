@@ -13,9 +13,41 @@ export default function Summary() {
 
   // Adjust state
   const [showAdjust, setShowAdjust] = useState(false)
-  const [adjustCustomerId, setAdjustCustomerId] = useState('')
+  const [customerQuery, setCustomerQuery] = useState('')
+  const [customerResults, setCustomerResults] = useState([])
+  const [selectedCustomer, setSelectedCustomer] = useState(null)
+  const [customerSearchLoading, setCustomerSearchLoading] = useState(false)
   const [adjustAmount, setAdjustAmount] = useState('')
   const [adjustReason, setAdjustReason] = useState('')
+
+  useEffect(() => {
+    if (!showAdjust) return undefined
+
+    const timer = setTimeout(async () => {
+      setCustomerSearchLoading(true)
+      try {
+        let request = supabase
+          .from('customers')
+          .select('id, full_name, mobile, tier')
+          .eq('is_active', true)
+        const trimmed = customerQuery.trim()
+        if (trimmed) {
+          request = request.or(`full_name.ilike.%${trimmed}%,mobile.ilike.%${trimmed}%`)
+        } else {
+          request = request.order('full_name', { ascending: true })
+        }
+        const { data, error } = await request.limit(50)
+        if (error) throw error
+        setCustomerResults(data || [])
+      } catch (e) {
+        toast(e.message || 'Failed to search customers')
+      } finally {
+        setCustomerSearchLoading(false)
+      }
+    }, 250)
+
+    return () => clearTimeout(timer)
+  }, [showAdjust, customerQuery, toast])
 
   async function fetchSummary() {
     setLoading(true)
@@ -44,17 +76,19 @@ export default function Summary() {
 
   async function handleAdjust(e) {
     e.preventDefault()
-    if (!adjustCustomerId || !adjustAmount || !adjustReason) return
+    if (!selectedCustomer || !adjustAmount || !adjustReason) return
     try {
       const { error } = await supabase.rpc('adjust_wallet', {
-        p_customer: adjustCustomerId,
+        p_customer: selectedCustomer.id,
         p_amount: parseInt(adjustAmount, 10),
         p_reason: adjustReason,
       })
       if (error) throw error
       toast('Wallet adjusted!')
       setShowAdjust(false)
-      setAdjustCustomerId('')
+      setCustomerQuery('')
+      setCustomerResults([])
+      setSelectedCustomer(null)
       setAdjustAmount('')
       setAdjustReason('')
       fetchSummary()
@@ -138,12 +172,55 @@ export default function Summary() {
           {showAdjust && (
             <form onSubmit={handleAdjust} style={{ marginBottom: 16 }}>
               <input
-                className="input"
-                placeholder="Customer ID (UUID)"
-                value={adjustCustomerId}
-                onChange={(e) => setAdjustCustomerId(e.target.value)}
+                className="search-input"
+                placeholder="Search customer by name or mobile..."
+                value={customerQuery}
+                onChange={(e) => {
+                  setCustomerQuery(e.target.value)
+                  setSelectedCustomer(null)
+                }}
                 required
               />
+              {customerSearchLoading && (
+                <p style={{ fontSize: 13, color: 'var(--muted)', margin: '8px 0' }}>Searching...</p>
+              )}
+              {!selectedCustomer && !customerSearchLoading && customerResults.map((customer) => (
+                <button
+                  type="button"
+                  key={customer.id}
+                  className="customer-row"
+                  onClick={() => {
+                    setSelectedCustomer(customer)
+                    setCustomerQuery(customer.full_name)
+                  }}
+                  style={{ width: '100%', textAlign: 'left' }}
+                >
+                  <span className="avatar">{customer.full_name?.charAt(0) || '?'}</span>
+                  <span className="crow-meta">
+                    <span className="crow-name">{customer.full_name}</span>
+                    <span className="crow-mobile">{customer.mobile}</span>
+                  </span>
+                  <span className={`badge ${customer.tier === 'founder' ? 'founder' : 'starter'}`}>
+                    {customer.tier || 'starter'}
+                  </span>
+                </button>
+              ))}
+              {selectedCustomer && (
+                <div className="customer-row" style={{ marginBottom: 8 }}>
+                  <div className="avatar">{selectedCustomer.full_name?.charAt(0) || '?'}</div>
+                  <div className="crow-meta">
+                    <div className="crow-name">{selectedCustomer.full_name}</div>
+                    <div className="crow-mobile">{selectedCustomer.mobile}</div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCustomer(null)}
+                    style={{ border: 0, background: 'none', color: 'var(--blue)', cursor: 'pointer' }}
+                  >
+                    Change
+                  </button>
+                </div>
+              )}
               <input
                 className="input"
                 type="number"
