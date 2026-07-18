@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '../supabase'
 
 const AuthContext = createContext(null)
 
@@ -17,7 +18,8 @@ export function AuthProvider({ children }) {
     setUser(authUser)
   }
 
-  function logout() {
+  async function logout() {
+    await supabase.auth.signOut().catch(() => {})
     sessionStorage.removeItem('staff')
     sessionStorage.removeItem('user')
     setStaff(null)

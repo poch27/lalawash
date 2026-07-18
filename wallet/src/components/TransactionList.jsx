@@ -7,7 +7,8 @@ const ICON_MAP = {
   deduct: '👕',
   void: '↩️',
   adjust: '🔧',
-  founding_bonus: '🎁',
+  bonus: '🎁',
+  expire: '⏳',
 }
 
 export default function TransactionList({ transactions, onVoid, balance }) {
@@ -21,7 +22,7 @@ export default function TransactionList({ transactions, onVoid, balance }) {
       )}
       {transactions?.map((txn) => {
         const isCredit = txn.amount >= 0
-        const kind = txn.transaction_type || (isCredit ? 'load' : 'deduct')
+        const kind = txn.type || (isCredit ? 'load' : 'deduct')
         const icon = ICON_MAP[kind] || (isCredit ? '💰' : '👕')
         const desc = txn.description || PRESET_DESC[0]
         const date = new Date(txn.created_at).toLocaleDateString('en-PH', {

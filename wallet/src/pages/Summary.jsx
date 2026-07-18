@@ -22,7 +22,10 @@ export default function Summary() {
     try {
       const [sumRes, auditRes] = await Promise.all([
         supabase.rpc('daily_summary', { p_day: date }),
-        supabase.from('audit_log').select('*').eq('day', date).order('created_at', { ascending: false }).limit(50),
+        supabase.from('audit_log').select('*')
+          .gte('created_at', `${date}T00:00:00`)
+          .lte('created_at', `${date}T23:59:59`)
+          .order('created_at', { ascending: false }).limit(50),
       ])
 
       if (sumRes.error) throw sumRes.error
@@ -176,7 +179,7 @@ export default function Summary() {
                   {entry.created_at
                     ? new Date(entry.created_at).toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' })
                     : ''}
-                  {' · '}{entry.staff_name || entry.details || ''}
+                  {entry.detail ? ` · ${Object.entries(entry.detail).map(([k, v]) => `${k}: ${v}`).join(', ')}` : ''}
                 </div>
               </div>
             </div>
