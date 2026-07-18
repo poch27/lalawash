@@ -54,8 +54,13 @@ export default function CustomerDetail() {
       setBalance(balRes.data?.[0] || { paid: 0, bonus: 0, total: 0 })
       setPerks(perkRes.data?.[0] || null)
       setClaims(claimRes.data || [])
-      setTransactions(txnRes.data || [])
-      setMembers(memberRes.data || [])
+      const loadedMembers = memberRes.data || []
+      const memberNames = new Map(loadedMembers.map((member) => [member.id, member.name]))
+      setTransactions((txnRes.data || []).map((txn) => ({
+        ...txn,
+        member_name: txn.member_name || memberNames.get(txn.member_id),
+      })))
+      setMembers(loadedMembers)
     } catch (e) {
       console.error('Fetch detail error:', e)
       toast('Failed to load customer data')
