@@ -1,3 +1,4 @@
 dist/
 .claude/
 .DS_Store
+.wrangler/
