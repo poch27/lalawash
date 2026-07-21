@@ -78,9 +78,9 @@ language sql stable security definer set search_path = public as $$
   c as (select tier from customers where id = p_customer)
   select
     case when ll.d is null then false
-         else (ll.d + (case when c.tier = 'founder' then 90 else 30 end)) >= current_date end,
+         else (ll.d + (case when c.tier = 'founder' then 75 else 30 end)) >= current_date end,
     case when ll.d is null then null
-         else (ll.d + (case when c.tier = 'founder' then 90 else 30 end)) end
+         else (ll.d + (case when c.tier = 'founder' then 75 else 30 end)) end
   from c left join last_load ll on true;
 $$;
 
