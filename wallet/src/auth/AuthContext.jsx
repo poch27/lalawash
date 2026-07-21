@@ -33,7 +33,10 @@ export function AuthProvider({ children }) {
     login,
     logout,
     isOwner: staff?.role === 'owner',
+    isManager: staff?.role === 'manager',
     isStaff: !!staff,
+    canVoid: staff?.role === 'owner' || staff?.role === 'manager',
+    canViewSummary: staff?.role === 'owner' || staff?.role === 'manager',
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -12,7 +12,7 @@ const ICON_MAP = {
 }
 
 export default function TransactionList({ transactions, onVoid, balance }) {
-  const { isOwner } = useAuth()
+  const { canVoid } = useAuth()
   const reversedTxnIds = new Set(
     (transactions || []).map((txn) => txn.reverses_txn_id).filter(Boolean),
   )
@@ -52,7 +52,7 @@ export default function TransactionList({ transactions, onVoid, balance }) {
             <div className={`t-amt ${isCredit ? 'credit' : 'debit'}`}>
               {isCredit ? '+' : '−'}₱{Math.abs(txn.amount).toLocaleString('en-PH', { minimumFractionDigits: 2 })}
             </div>
-            {isOwner && !voided && !isVoidRow && (
+            {canVoid && !voided && !isVoidRow && (
               <div
                 className="t-void"
                 onClick={() => {

@@ -10,7 +10,7 @@ const BADGE_CLASS = { founder: 'founder', starter: 'starter' }
 
 export default function Search() {
   const navigate = useNavigate()
-  const { isOwner } = useAuth()
+  const { canViewSummary } = useAuth()
   const toast = useToast()
   const [query, setQuery] = useState('')
   const [customers, setCustomers] = useState([])
@@ -105,7 +105,7 @@ export default function Search() {
         >
           📷 Scan QR
         </button>
-        {isOwner && (
+        {canViewSummary && (
           <Link to="/summary" style={{
             flex: 1,
             padding: '10px 14px',

@@ -2,7 +2,9 @@ import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext'
 
 export default function Layout() {
-  const { staff, isOwner, logout } = useAuth()
+  const { staff, canViewSummary, logout } = useAuth()
+
+  const roleLabel = staff?.role === 'owner' ? 'Owner' : staff?.role === 'manager' ? 'Manager' : 'Staff'
   const navigate = useNavigate()
 
   async function handleLogout() {
@@ -15,8 +17,8 @@ export default function Layout() {
       <header className="appbar">
         <span className="logo">🧺</span>
         <span className="title">Lala Wash</span>
-        <span className="role">{staff?.role === 'owner' ? 'Owner' : 'Staff'}</span>
-        {isOwner && (
+        <span className="role">{roleLabel}</span>
+        {canViewSummary && (
           <Link to="/summary" style={{ fontSize: '12px', color: 'var(--blue)', textDecoration: 'none' }}>
             📊
           </Link>

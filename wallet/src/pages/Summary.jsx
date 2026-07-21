@@ -1,12 +1,26 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../supabase'
 import { useToast } from '../components/Toast'
+import { useAuth } from '../auth/AuthContext'
+
+function monthRange(monthStr) {
+  // monthStr = "YYYY-MM"
+  const [y, m] = monthStr.split('-').map(Number)
+  const from = `${monthStr}-01`
+  const lastDay = new Date(y, m, 0).getDate()
+  const to = `${monthStr}-${String(lastDay).padStart(2, '0')}`
+  return { from, to }
+}
 
 export default function Summary() {
   const navigate = useNavigate()
   const toast = useToast()
+  const { isOwner } = useAuth()
+
+  const [view, setView] = useState('day') // 'day' | 'month'
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
+  const [month, setMonth] = useState(new Date().toISOString().slice(0, 7))
   const [summary, setSummary] = useState(null)
   const [auditLog, setAuditLog] = useState([])
   const [loading, setLoading] = useState(false)
@@ -49,18 +63,31 @@ export default function Summary() {
     return () => clearTimeout(timer)
   }, [showAdjust, customerQuery, toast])
 
-  async function fetchSummary() {
+  const fetchSummary = useCallback(async () => {
     setLoading(true)
     try {
+      let from, to
+      if (view === 'month') {
+        ;({ from, to } = monthRange(month))
+      } else {
+        from = date
+        to = date
+      }
+
       const [sumRes, auditRes] = await Promise.all([
-        supabase.rpc('daily_summary', { p_day: date }),
+        view === 'month'
+          ? supabase.rpc('period_summary', { p_from: from, p_to: to })
+          : supabase.rpc('daily_summary', { p_day: date }),
         supabase.from('audit_log').select('*')
-          .gte('created_at', `${date}T00:00:00`)
-          .lte('created_at', `${date}T23:59:59`)
+          .gte('created_at', `${from}T00:00:00`)
+          .lte('created_at', `${to}T23:59:59`)
           .order('created_at', { ascending: false }).limit(50),
       ])
 
       if (sumRes.error) throw sumRes.error
+      // daily_summary is `returns jsonb` (plain object); period_summary is also
+      // `returns jsonb` (plain object) — neither needs [0] indexing. Guard with
+      // Array.isArray anyway in case that ever changes.
       setSummary(Array.isArray(sumRes.data) ? sumRes.data[0] : sumRes.data)
       setAuditLog(auditRes.data || [])
     } catch (e) {
@@ -68,11 +95,11 @@ export default function Summary() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [view, date, month, toast])
 
   useEffect(() => {
     fetchSummary()
-  }, [date])
+  }, [fetchSummary])
 
   async function handleAdjust(e) {
     e.preventDefault()
@@ -102,6 +129,8 @@ export default function Summary() {
   const totalDeducted = summary?.total_deducted ?? 0
   const bonusGranted = summary?.bonus_granted ?? 0
   const txnCount = summary?.txn_count ?? 0
+  const byDay = summary?.by_day ?? []
+  const byStaff = summary?.by_staff ?? []
 
   return (
     <div className="app-body">
@@ -109,16 +138,37 @@ export default function Summary() {
         <Link to="/" style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', padding: 4, textDecoration: 'none' }}>
           ←
         </Link>
-        <h2 style={{ fontSize: 18, fontWeight: 700, flex: 1 }}>Daily Summary</h2>
+        <h2 style={{ fontSize: 18, fontWeight: 700, flex: 1 }}>
+          {view === 'month' ? 'Monthly Summary' : 'Daily Summary'}
+        </h2>
       </div>
 
-      <input
-        className="input"
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        style={{ marginBottom: 16 }}
-      />
+      <div className="toggle" style={{ marginBottom: 12 }}>
+        <div className={`opt ${view === 'day' ? 'sel' : ''}`} onClick={() => setView('day')}>
+          Day
+        </div>
+        <div className={`opt ${view === 'month' ? 'sel' : ''}`} onClick={() => setView('month')}>
+          Month
+        </div>
+      </div>
+
+      {view === 'day' ? (
+        <input
+          className="input"
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          style={{ marginBottom: 16 }}
+        />
+      ) : (
+        <input
+          className="input"
+          type="month"
+          value={month}
+          onChange={(e) => setMonth(e.target.value)}
+          style={{ marginBottom: 16 }}
+        />
+      )}
 
       {loading && <p style={{ fontSize: '13px', color: 'var(--muted)', textAlign: 'center' }}>Loading...</p>}
 
@@ -143,7 +193,7 @@ export default function Summary() {
             </div>
             <div className="summary-card" style={{ gridColumn: '1 / -1' }}>
               <div className="s-val">{txnCount}</div>
-              <div className="s-lbl">Transactions Today</div>
+              <div className="s-lbl">Transactions {view === 'month' ? 'This Month' : 'Today'}</div>
             </div>
           </div>
 
@@ -156,20 +206,60 @@ export default function Summary() {
             fontSize: 14,
             color: '#065F46',
           }}>
-            💵 <strong>Expected cash in drawer:</strong> ₱{Number(cashLoaded).toLocaleString()}
+            💵 <strong>Expected cash {view === 'month' ? 'received' : 'in drawer'}:</strong> ₱{Number(cashLoaded).toLocaleString()}
           </div>
 
-          <div style={{ marginBottom: 12 }}>
-            <button
-              className="btn"
-              onClick={() => setShowAdjust(!showAdjust)}
-              style={{ width: '100%', background: 'var(--amber)', color: '#fff' }}
-            >
-              🔧 Adjust Wallet (Owner)
-            </button>
-          </div>
+          {view === 'month' && byDay.length > 0 && (
+            <div style={{ marginBottom: 16 }}>
+              <div className="sec-lbl">Per Day</div>
+              {byDay.map((d) => (
+                <div className="txn" key={d.day}>
+                  <div className="ico">📅</div>
+                  <div className="t-meta">
+                    <div className="t-nm">{new Date(d.day).toLocaleDateString('en-PH', { month: 'short', day: 'numeric' })}</div>
+                    <div className="t-dt">{d.txns} txn{d.txns === 1 ? '' : 's'}</div>
+                  </div>
+                  <div style={{ textAlign: 'right', fontSize: 13 }}>
+                    <div style={{ color: 'var(--green)', fontWeight: 600 }}>+₱{Number(d.loaded).toLocaleString()}</div>
+                    <div style={{ color: 'var(--red)' }}>−₱{Number(d.deducted).toLocaleString()}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
-          {showAdjust && (
+          {view === 'month' && byStaff.length > 0 && (
+            <div style={{ marginBottom: 16 }}>
+              <div className="sec-lbl">Per Staff</div>
+              {byStaff.map((s) => (
+                <div className="txn" key={s.name}>
+                  <div className="ico">👤</div>
+                  <div className="t-meta">
+                    <div className="t-nm">{s.name}</div>
+                    <div className="t-dt">{s.txns} txn{s.txns === 1 ? '' : 's'}</div>
+                  </div>
+                  <div style={{ textAlign: 'right', fontSize: 13 }}>
+                    <div style={{ color: 'var(--green)', fontWeight: 600 }}>+₱{Number(s.loaded).toLocaleString()}</div>
+                    <div style={{ color: 'var(--red)' }}>−₱{Number(s.deducted).toLocaleString()}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {isOwner && (
+            <div style={{ marginBottom: 12 }}>
+              <button
+                className="btn"
+                onClick={() => setShowAdjust(!showAdjust)}
+                style={{ width: '100%', background: 'var(--amber)', color: '#fff' }}
+              >
+                🔧 Adjust Wallet (Owner)
+              </button>
+            </div>
+          )}
+
+          {isOwner && showAdjust && (
             <form onSubmit={handleAdjust} style={{ marginBottom: 16 }}>
               <input
                 className="search-input"

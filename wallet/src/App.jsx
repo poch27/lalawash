@@ -15,11 +15,11 @@ function LazyFallback() {
   return <div className="app-body text-center">Loading...</div>
 }
 
-function ProtectedRoute({ children, ownerOnly = false }) {
-  const { isStaff, isOwner } = useAuth()
+function ProtectedRoute({ children, requireSummaryAccess = false }) {
+  const { isStaff, canViewSummary } = useAuth()
 
   if (!isStaff) return <Navigate to="/login" replace />
-  if (ownerOnly && !isOwner) return <Navigate to="/" replace />
+  if (requireSummaryAccess && !canViewSummary) return <Navigate to="/" replace />
 
   return children
 }
@@ -43,7 +43,7 @@ function AppRoutes() {
         <Route
           path="summary"
           element={
-            <ProtectedRoute ownerOnly>
+            <ProtectedRoute requireSummaryAccess>
               <Suspense fallback={<LazyFallback />}>
               <Summary />
             </Suspense>
